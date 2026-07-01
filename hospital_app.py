@@ -11,4 +11,3 @@ with open("hospital_model.pkl", "rb") as f:
     st.success("Model loaded successfully!")
     st.write(bundle.keys())
 
-x
