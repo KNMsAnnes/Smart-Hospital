@@ -180,6 +180,9 @@ predict_button = st.button("Predict Department")
 # ===============================
 # MAKE PREDICTION
 # ===============================
+# ===============================
+# MAKE PREDICTION
+# ===============================
 
 if predict_button:
     try:
@@ -227,42 +230,33 @@ if predict_button:
         )[0]
     
         department = dept_map_inv[prediction]
-    
         confidence = probability[prediction] * 100
-    except Exception as e:
-        st.error(e)
-    # ===============================
-    # SHOW RESULT
-    # ===============================
 
-    st.divider()
+        # ===============================
+        # SHOW RESULT (Dipindahkan ke dalam blok TRY)
+        # ===============================
+        st.divider()
+        st.header("Prediction Result")
 
-    st.header("Prediction Result")
+        info = DEPT_INFO.get(department)
 
-    info = DEPT_INFO.get(department)
+        if info:
+            st.success(
+                f"{info['icon']} Recommended Department: {department}"
+            )
+            st.write(f"**Confidence:** {confidence:.1f}%")
+            st.write("### Description")
+            st.write(info["desc"])
+            st.write("### What should the patient do?")
+            for step in info["next"]:
+                st.write(f"✅ {step}")
+        else:
+            st.success(f"Recommended Department: {department}")
+            st.write(f"Confidence: {confidence:.1f}%")
 
-    if info:
-
-        st.success(
-            f"{info['icon']} Recommended Department: {department}"
+        st.warning(
+            "This AI recommendation is only for educational purposes and is not a medical diagnosis."
         )
 
-        st.write(f"**Confidence:** {confidence:.1f}%")
-
-        st.write("### Description")
-        st.write(info["desc"])
-
-        st.write("### What should the patient do?")
-
-        for step in info["next"]:
-            st.write(f"✅ {step}")
-
-    else:
-
-        st.success(f"Recommended Department: {department}")
-
-        st.write(f"Confidence: {confidence:.1f}%")
-
-    st.warning(
-        "This AI recommendation is only for educational purposes and is not a medical diagnosis."
-    )
+    except Exception as e:
+        st.error(f"Terjadi kesalahan saat memproses data: {e}")
