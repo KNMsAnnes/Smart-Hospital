@@ -8,6 +8,8 @@ import pickle
 
 with open("hospital_model.pkl", "rb") as f:
     bundle = pickle.load(f)
+    st.success("Model loaded successfully!")
+    st.write(bundle.keys())
 
 model = bundle["model"]
 scaler = bundle["scaler"]
