@@ -182,54 +182,55 @@ predict_button = st.button("Predict Department")
 # ===============================
 
 if predict_button:
-
-    # Create patient data
-    patient = pd.DataFrame([{
-        "age": age,
-        "gender": gender_map[gender],
-
-        "fever": int(fever),
-        "cough": int(cough),
-        "headache": int(headache),
-        "chest_pain": int(chest_pain),
-        "stomach_pain": int(stomach_pain),
-        "shortness_breath": int(shortness_breath),
-        "nausea_vomiting": int(nausea_vomiting),
-        "dizziness": int(dizziness),
-        "skin_rash": int(skin_rash),
-
-        "temperature_level": temp_map[temperature_level],
-        "heart_rate_level": hr_map[heart_rate_level],
-        "duration": dur_map[duration],
-
-        "asthma": int(asthma),
-        "hypertension": int(hypertension),
-        "heart_disease": int(heart_disease),
-
-        "chief_complaint": cc_map[chief_complaint]
-    }])
-
-    # Scale numerical features
-    patient_scaled = patient.copy()
-
-    patient_scaled[cols_to_scale] = scaler.transform(
-        patient[cols_to_scale]
-    )
-
-    # Predict department
-    prediction = model.predict(
-        patient_scaled[features]
-    )[0]
-
-    # Predict confidence
-    probability = model.predict_proba(
-        patient_scaled[features]
-    )[0]
-
-    department = dept_map_inv[prediction]
-
-    confidence = probability[prediction] * 100
-
+    try:
+        # Create patient data
+        patient = pd.DataFrame([{
+            "age": age,
+            "gender": gender_map[gender],
+    
+            "fever": int(fever),
+            "cough": int(cough),
+            "headache": int(headache),
+            "chest_pain": int(chest_pain),
+            "stomach_pain": int(stomach_pain),
+            "shortness_breath": int(shortness_breath),
+            "nausea_vomiting": int(nausea_vomiting),
+            "dizziness": int(dizziness),
+            "skin_rash": int(skin_rash),
+    
+            "temperature_level": temp_map[temperature_level],
+            "heart_rate_level": hr_map[heart_rate_level],
+            "duration": dur_map[duration],
+    
+            "asthma": int(asthma),
+            "hypertension": int(hypertension),
+            "heart_disease": int(heart_disease),
+    
+            "chief_complaint": cc_map[chief_complaint]
+        }])
+    
+        # Scale numerical features
+        patient_scaled = patient.copy()
+    
+        patient_scaled[cols_to_scale] = scaler.transform(
+            patient[cols_to_scale]
+        )
+    
+        # Predict department
+        prediction = model.predict(
+            patient_scaled[features]
+        )[0]
+    
+        # Predict confidence
+        probability = model.predict_proba(
+            patient_scaled[features]
+        )[0]
+    
+        department = dept_map_inv[prediction]
+    
+        confidence = probability[prediction] * 100
+    except Exception as e:
+        st.error(e)
     # ===============================
     # SHOW RESULT
     # ===============================
